@@ -1,0 +1,5 @@
+NODE_ENV=production
+PORT=4000
+CLIENT_URL=https://your-frontend.example.com
+MONGODB_URI=mongodb+srv://USER:PASSWORD@CLUSTER/dbname?retryWrites=true&w=majority
+JWT_SECRET=replace_with_strong_secret

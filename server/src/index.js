@@ -15,6 +15,11 @@ app.use(cors({ origin: CLIENT_URL, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 
+// In production behind a proxy (Render/Heroku), trust proxy so Secure cookies work
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 app.get('/', (_req, res) => {
   res.json({ status: 'ok' });
 });

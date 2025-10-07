@@ -1,0 +1,18 @@
+services:
+  - type: web
+    name: userregis-api
+    env: node
+    rootDir: server
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 4000
+      - key: CLIENT_URL
+        value: https://your-frontend.example.com
+      - key: MONGODB_URI
+        value: replace_in_dashboard
+      - key: JWT_SECRET
+        value: replace_in_dashboard
