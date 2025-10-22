@@ -12,11 +12,11 @@ services:
       - key: PORT
         value: 4000
       - key: CLIENT_URL
-        value: https://your-frontend.example.com
+        value: https://userregis-frontend.onrender.com
       - key: MYSQL_HOST
         value: replace_in_dashboard
       - key: MYSQL_PORT
-        value: 3306
+        value: 5432
       - key: MYSQL_DATABASE
         value: replace_in_dashboard
       - key: MYSQL_USER
@@ -25,3 +25,14 @@ services:
         value: replace_in_dashboard
       - key: JWT_SECRET
         value: replace_in_dashboard
+
+  - type: web
+    name: userregis-frontend
+    env: static
+    plan: free
+    rootDir: client
+    buildCommand: npm install && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://userregis-api.onrender.com

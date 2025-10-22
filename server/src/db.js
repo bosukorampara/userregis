@@ -27,6 +27,15 @@ if (useSqlite) {
     port,
     dialect,
     logging: false,
+    // Add SSL configuration for production PostgreSQL
+    ...(process.env.NODE_ENV === 'production' && {
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false
+        }
+      }
+    })
   });
 }
 

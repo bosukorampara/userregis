@@ -24,13 +24,14 @@
 - Copy the connection details (host, database, username, password)
 - No additional network configuration needed (internal to Render)
 
-## Frontend (Vercel)
-1. Import the repo, Project Root: `client`
-2. Build Command: `npm run build`
-3. Output Directory: `dist`
-4. Environment Variables:
-   - `VITE_API_URL=https://yourapi.onrender.com` (or your custom API domain)
-5. Deploy. Copy the domain (e.g., https://yourapp.vercel.app).
+## Frontend (Render)
+1. In Render Dashboard, create a Static Site:
+   - Root Directory: `client`
+   - Build Command: `npm install && npm run build`
+   - Publish Directory: `dist`
+2. Environment Variables:
+   - `VITE_API_URL=https://userregis-api.onrender.com`
+3. Deploy. Copy the domain (e.g., https://userregis-frontend.onrender.com).
 
 ## Custom Domains (optional)
 - Frontend: point `www.yourdomain.com` to Vercel (CNAME). Set root to redirect to `www`.
