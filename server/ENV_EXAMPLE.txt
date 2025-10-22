@@ -1,5 +1,17 @@
 NODE_ENV=production
 PORT=4000
 CLIENT_URL=https://your-frontend.example.com
-MONGODB_URI=mongodb+srv://USER:PASSWORD@CLUSTER/dbname?retryWrites=true&w=majority
 JWT_SECRET=replace_with_strong_secret
+
+# MySQL configuration for production
+MYSQL_HOST=your-render-mysql-host
+MYSQL_PORT=3306
+MYSQL_DATABASE=your-database-name
+MYSQL_USER=your-username
+MYSQL_PASSWORD=your-password
+
+# For local development, use SQLite (no MySQL server needed)
+# Set USE_SQLITE=1 to enable SQLite for local development
+# Example for local development:
+# USE_SQLITE=1
+# SQLITE_STORAGE=/absolute/path/to/server/dev.sqlite

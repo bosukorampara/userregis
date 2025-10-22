@@ -13,7 +13,15 @@ services:
         value: 4000
       - key: CLIENT_URL
         value: https://your-frontend.example.com
-      - key: MONGODB_URI
+      - key: MYSQL_HOST
+        value: replace_in_dashboard
+      - key: MYSQL_PORT
+        value: 3306
+      - key: MYSQL_DATABASE
+        value: replace_in_dashboard
+      - key: MYSQL_USER
+        value: replace_in_dashboard
+      - key: MYSQL_PASSWORD
         value: replace_in_dashboard
       - key: JWT_SECRET
         value: replace_in_dashboard
