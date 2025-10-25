@@ -16,7 +16,7 @@ services:
       - key: MYSQL_HOST
         value: replace_in_dashboard
       - key: MYSQL_PORT
-        value: 3306
+        value: 5432
       - key: MYSQL_DATABASE
         value: replace_in_dashboard
       - key: MYSQL_USER
