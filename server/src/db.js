@@ -14,13 +14,15 @@ if (useSqlite) {
 } else {
   // Expect environment variables: MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
   const host = process.env.MYSQL_HOST || '127.0.0.1';
-  const port = process.env.MYSQL_PORT ? Number(process.env.MYSQL_PORT) : 3306;
   const database = process.env.MYSQL_DATABASE || 'userregis';
   const username = process.env.MYSQL_USER || 'root';
   const password = process.env.MYSQL_PASSWORD || '';
 
   // Use PostgreSQL for production, MySQL for local
   const dialect = process.env.NODE_ENV === 'production' ? 'postgres' : 'mysql';
+  
+  // For PostgreSQL, we need to use the correct port
+  const port = process.env.NODE_ENV === 'production' ? 5432 : (process.env.MYSQL_PORT ? Number(process.env.MYSQL_PORT) : 3306);
   
   sequelize = new Sequelize(database, username, password, {
     host,
