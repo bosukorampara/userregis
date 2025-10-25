@@ -3,7 +3,7 @@ PORT=4000
 CLIENT_URL=https://your-frontend.example.com
 JWT_SECRET=replace_with_strong_secret
 
-# MySQL configuration for production
+# MySQL configuration for production (Render)
 MYSQL_HOST=your-render-mysql-host
 MYSQL_PORT=3306
 MYSQL_DATABASE=your-database-name

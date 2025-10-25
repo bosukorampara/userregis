@@ -23,6 +23,7 @@
 - Create a MySQL database in Render Dashboard
 - Copy the connection details (host, database, username, password)
 - No additional network configuration needed (internal to Render)
+- **Note**: Render provides managed MySQL databases for production use
 
 ## Frontend (Render)
 1. In Render Dashboard, create a Static Site:

@@ -19,21 +19,21 @@ if (useSqlite) {
   const username = process.env.MYSQL_USER || 'root';
   const password = process.env.MYSQL_PASSWORD || '';
 
-  // Use PostgreSQL for production (Render), MySQL for local if needed
-  const dialect = process.env.NODE_ENV === 'production' ? 'postgres' : 'mysql';
+  // Use MySQL for both local and production
+  const dialect = 'mysql';
   
   sequelize = new Sequelize(database, username, password, {
     host,
     port,
     dialect,
     logging: false,
-    // Add SSL configuration for production PostgreSQL
+    // Add SSL configuration for production MySQL
     ...(process.env.NODE_ENV === 'production' && {
       dialectOptions: {
-        ssl: process.env.NODE_ENV === 'production' ? {
+        ssl: {
           require: true,
           rejectUnauthorized: false
-        } : false
+        }
       }
     })
   });
@@ -42,7 +42,7 @@ if (useSqlite) {
 async function testConnection() {
   try {
     await sequelize.authenticate();
-    console.log(useSqlite ? 'Connected to SQLite' : `Connected to ${process.env.NODE_ENV === 'production' ? 'PostgreSQL' : 'MySQL'}`);
+    console.log(useSqlite ? 'Connected to SQLite' : 'Connected to MySQL');
   } catch (err) {
     console.error('Unable to connect to database:', err);
     console.error('Database connection details:', {
