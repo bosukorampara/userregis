@@ -30,10 +30,10 @@ if (useSqlite) {
     // Add SSL configuration for production PostgreSQL
     ...(process.env.NODE_ENV === 'production' && {
       dialectOptions: {
-        ssl: {
+        ssl: process.env.NODE_ENV === 'production' ? {
           require: true,
           rejectUnauthorized: false
-        }
+        } : false
       }
     })
   });
@@ -45,6 +45,13 @@ async function testConnection() {
     console.log(useSqlite ? 'Connected to SQLite' : `Connected to ${process.env.NODE_ENV === 'production' ? 'PostgreSQL' : 'MySQL'}`);
   } catch (err) {
     console.error('Unable to connect to database:', err);
+    console.error('Database connection details:', {
+      host: process.env.MYSQL_HOST,
+      port: process.env.MYSQL_PORT,
+      database: process.env.MYSQL_DATABASE,
+      username: process.env.MYSQL_USER,
+      nodeEnv: process.env.NODE_ENV
+    });
     throw err;
   }
 }

@@ -33,22 +33,60 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 app.get('/', (_req, res) => {
-  res.json({ status: 'ok' });
+  res.json({ 
+    status: 'ok',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+    port: PORT
+  });
+});
+
+app.get('/health', async (_req, res) => {
+  try {
+    await sequelize.authenticate();
+    res.json({ 
+      status: 'healthy',
+      database: 'connected',
+      timestamp: new Date().toISOString()
+    });
+  } catch (err) {
+    res.status(503).json({ 
+      status: 'unhealthy',
+      database: 'disconnected',
+      error: err.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 app.use('/api/auth', authRouter);
 
 async function start() {
-  await testConnection();
-  // Sync models with DB. In production consider migrations instead of sync({ alter: true }).
-  await sequelize.sync();
-  app.listen(PORT, () => console.log(`API on http://localhost:${PORT}`));
+  try {
+    console.log('Starting server...');
+    console.log('Environment:', process.env.NODE_ENV);
+    console.log('Port:', PORT);
+    console.log('Client URL:', CLIENT_URL);
+    
+    await testConnection();
+    console.log('Database connection successful');
+    
+    // Sync models with DB. In production consider migrations instead of sync({ alter: true }).
+    await sequelize.sync();
+    console.log('Database tables synced');
+    
+    app.listen(PORT, () => {
+      console.log(`API running on port ${PORT}`);
+      console.log(`Environment: ${process.env.NODE_ENV}`);
+    });
+  } catch (err) {
+    console.error('Failed to start server:', err);
+    console.error('Error details:', err.message);
+    process.exit(1);
+  }
 }
 
-start().catch((err) => {
-  console.error('Failed to start server:', err);
-  process.exit(1);
-});
+start();
 
 
 
