@@ -11,19 +11,22 @@
    - `NODE_ENV=production`
    - `PORT=4000`
    - `CLIENT_URL=https://your-frontend.example.com`
-   - `MYSQL_HOST=your-render-mysql-host`
-   - `MYSQL_PORT=3306`
-   - `MYSQL_DATABASE=your-database-name`
-   - `MYSQL_USER=your-username`
-   - `MYSQL_PASSWORD=your-password`
+   - `DATABASE_URL=postgresql://username:password@host:5432/database_name` (recommended)
+   - OR use individual PostgreSQL variables:
+     - `POSTGRES_HOST=your-render-postgres-host`
+     - `POSTGRES_PORT=5432`
+     - `POSTGRES_DATABASE=your-database-name`
+     - `POSTGRES_USER=your-username`
+     - `POSTGRES_PASSWORD=your-password`
    - `JWT_SECRET=strong random string`
 4. Deploy. Copy the service URL (e.g., https://yourapi.onrender.com).
 
-## Database (Render MySQL)
-- Create a MySQL database in Render Dashboard
+## Database (Render PostgreSQL)
+- Create a PostgreSQL database in Render Dashboard
 - Copy the connection details (host, database, username, password)
+- Use the `DATABASE_URL` format for easiest setup
 - No additional network configuration needed (internal to Render)
-- **Note**: Render provides managed MySQL databases for production use
+- **Note**: Render provides managed PostgreSQL databases for production use
 
 ## Frontend (Render)
 1. In Render Dashboard, create a Static Site:
@@ -42,4 +45,6 @@
   - Vercel `VITE_API_URL=https://api.yourdomain.com`
 
 ## Notes
-- In production, cookies are `SameSite=None; Secure`. `server/src/index.js` sets `app.set(trust
+- In production, cookies are `SameSite=None; Secure`. `server/src/index.js` sets `app.set('trust proxy', 1)` for proper cookie handling behind Render's proxy.
+- The application uses PostgreSQL as the primary database with SQLite available for local development.
+- SSL is automatically configured for production PostgreSQL connections.

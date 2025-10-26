@@ -13,15 +13,17 @@ services:
         value: 4000
       - key: CLIENT_URL
         value: https://userregis-frontend.onrender.com
-      - key: MYSQL_HOST
+      - key: DATABASE_URL
         value: replace_in_dashboard
-      - key: MYSQL_PORT
+      - key: POSTGRES_HOST
+        value: replace_in_dashboard
+      - key: POSTGRES_PORT
         value: 5432
-      - key: MYSQL_DATABASE
+      - key: POSTGRES_DATABASE
         value: replace_in_dashboard
-      - key: MYSQL_USER
+      - key: POSTGRES_USER
         value: replace_in_dashboard
-      - key: MYSQL_PASSWORD
+      - key: POSTGRES_PASSWORD
         value: replace_in_dashboard
       - key: JWT_SECRET
         value: replace_in_dashboard

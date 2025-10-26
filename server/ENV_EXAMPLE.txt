@@ -3,15 +3,26 @@ PORT=4000
 CLIENT_URL=https://your-frontend.example.com
 JWT_SECRET=replace_with_strong_secret
 
-# MySQL configuration for production (Render)
-MYSQL_HOST=your-render-mysql-host
-MYSQL_PORT=3306
-MYSQL_DATABASE=your-database-name
-MYSQL_USER=your-username
-MYSQL_PASSWORD=your-password
+# PostgreSQL configuration for production (Render)
+# Option 1: Use DATABASE_URL (recommended for Render)
+DATABASE_URL=postgresql://username:password@host:5432/database_name
 
-# For local development, use SQLite (no MySQL server needed)
+# Option 2: Use individual PostgreSQL environment variables
+POSTGRES_HOST=your-render-postgres-host
+POSTGRES_PORT=5432
+POSTGRES_DATABASE=your-database-name
+POSTGRES_USER=your-username
+POSTGRES_PASSWORD=your-password
+
+# For local development, use SQLite (no PostgreSQL server needed)
 # Set USE_SQLITE=1 to enable SQLite for local development
 # Example for local development:
 # USE_SQLITE=1
 # SQLITE_STORAGE=/absolute/path/to/server/dev.sqlite
+
+# For local PostgreSQL development (optional):
+# POSTGRES_HOST=localhost
+# POSTGRES_PORT=5432
+# POSTGRES_DATABASE=userregis
+# POSTGRES_USER=postgres
+# POSTGRES_PASSWORD=your-local-password

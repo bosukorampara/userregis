@@ -12,47 +12,54 @@ if (useSqlite) {
   const storage = process.env.SQLITE_STORAGE || path.join(process.cwd(), 'server', 'dev.sqlite');
   sequelize = new Sequelize({ dialect: 'sqlite', storage, logging: false });
 } else {
-  // Expect environment variables: MYSQL_HOST, MYSQL_PORT, MYSQL_DATABASE, MYSQL_USER, MYSQL_PASSWORD
-  const host = process.env.MYSQL_HOST || '127.0.0.1';
-  const database = process.env.MYSQL_DATABASE || 'userregis';
-  const username = process.env.MYSQL_USER || 'root';
-  const password = process.env.MYSQL_PASSWORD || '';
+  // PostgreSQL configuration - use consistent environment variables
+  const host = process.env.POSTGRES_HOST || process.env.DATABASE_URL ? undefined : 'localhost';
+  const database = process.env.POSTGRES_DATABASE || 'userregis';
+  const username = process.env.POSTGRES_USER || 'postgres';
+  const password = process.env.POSTGRES_PASSWORD || '';
+  const port = process.env.POSTGRES_PORT ? Number(process.env.POSTGRES_PORT) : 5432;
 
-  // Use PostgreSQL for production, MySQL for local
-  const dialect = process.env.NODE_ENV === 'production' ? 'postgres' : 'mysql';
-  
-  // For PostgreSQL, we need to use the correct port
-  const port = process.env.NODE_ENV === 'production' ? 5432 : (process.env.MYSQL_PORT ? Number(process.env.MYSQL_PORT) : 3306);
-  
-  sequelize = new Sequelize(database, username, password, {
-    host,
-    port,
-    dialect,
-    logging: false,
-    // Add SSL configuration for production MySQL
-    ...(process.env.NODE_ENV === 'production' && {
+  // Use DATABASE_URL if provided (common in production), otherwise use individual variables
+  if (process.env.DATABASE_URL) {
+    sequelize = new Sequelize(process.env.DATABASE_URL, {
+      dialect: 'postgres',
+      logging: false,
       dialectOptions: {
-        ssl: {
+        ssl: process.env.NODE_ENV === 'production' ? {
           require: true,
           rejectUnauthorized: false
-        }
+        } : false
       }
-    })
-  });
+    });
+  } else {
+    sequelize = new Sequelize(database, username, password, {
+      host,
+      port,
+      dialect: 'postgres',
+      logging: false,
+      dialectOptions: {
+        ssl: process.env.NODE_ENV === 'production' ? {
+          require: true,
+          rejectUnauthorized: false
+        } : false
+      }
+    });
+  }
 }
 
 async function testConnection() {
   try {
     await sequelize.authenticate();
-    console.log(useSqlite ? 'Connected to SQLite' : `Connected to ${process.env.NODE_ENV === 'production' ? 'PostgreSQL' : 'MySQL'}`);
+    console.log(useSqlite ? 'Connected to SQLite' : 'Connected to PostgreSQL');
   } catch (err) {
     console.error('Unable to connect to database:', err);
     console.error('Database connection details:', {
-      host: process.env.MYSQL_HOST,
-      port: process.env.MYSQL_PORT,
-      database: process.env.MYSQL_DATABASE,
-      username: process.env.MYSQL_USER,
-      nodeEnv: process.env.NODE_ENV
+      host: process.env.POSTGRES_HOST || 'localhost',
+      port: process.env.POSTGRES_PORT || 5432,
+      database: process.env.POSTGRES_DATABASE || 'userregis',
+      username: process.env.POSTGRES_USER || 'postgres',
+      nodeEnv: process.env.NODE_ENV,
+      hasDatabaseUrl: !!process.env.DATABASE_URL
     });
     throw err;
   }
